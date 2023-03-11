@@ -203,4 +203,7 @@ pyrightconfig.json
 .history
 .ionide
 
+### Project-specific configurations ###
+data/
+
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,jupyternotebooks
