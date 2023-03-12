@@ -238,5 +238,7 @@ pyrightconfig.json
 
 ### Project-specific configurations ###
 data/
+GIANA/
+DeepCAT/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,jupyternotebooks
