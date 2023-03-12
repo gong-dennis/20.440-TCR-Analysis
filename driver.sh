@@ -3,8 +3,10 @@
 # 1. Preprocessing
 
 # 2. Generate Main figures & tables
-
-Rscript src/visualization/Fig1_Clonality.R
+# 	 Figures stored in fig/main_fig/
+# 	 Tables stored in fig/tables/
 
 # 3. Generate Supplementary figures & tables
+# 	 Stored in fig/supp_fig/
 
+Rscript src/visualization/Fig1_Clonality.R # Saves file as S1.1_prodSimpClon.pdf
