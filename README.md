@@ -1,6 +1,6 @@
 # Overview
 
-This repo contains reproducible code used for analysis of TCRB sequencing data from patients with colorectal liver metastasis (CLM) treated with long or short doses of chemotherapy compared to non-treated patients. The data are deposited on the immuneACCESS database at the following [link](https://clients.adaptivebiotech.com/pub/ad7a2d37-a0bc-4d88-813e-6dd7d762a65b) with DOI: 10.21417/EH2023GS. The goal of this project is to understand the role of chemotherapy in reshaping the adaptive immune response in cancer.
+This repo contains reproducible code used for analysis of TCRB sequencing data from patients with colorectal liver metastasis (CLM) treated with long or short doses of chemotherapy compared to non-treated patients [1]. The data are deposited on the immuneACCESS database at the following [link](https://clients.adaptivebiotech.com/pub/ad7a2d37-a0bc-4d88-813e-6dd7d762a65b) with DOI: 10.21417/EH2023GS. The goal of this project is to understand the role of chemotherapy in reshaping the adaptive immune response in cancer.
 
 This repo was created by Dennis Gong and Thomas Usherwood as part of the Biological Networks class at MIT (20.440). Please direct questions to dgong3@mit.edu and thomasu@mit.edu
 
@@ -39,4 +39,7 @@ The driver file for the analysis in this pipeline is titled "driver.sh". The ent
 
 Package dependencies can be found in "requirements.txt"
 
+# References
+
+1. Høye, E. et al. Abstract 1346: T cell receptor repertoire sequencing reveals chemotherapy-driven clonal expansion in colorectal liver metastases. Cancer Research 82, 1346 (2022).
 
