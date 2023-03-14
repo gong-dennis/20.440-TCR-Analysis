@@ -10,6 +10,7 @@ The data was generated using the [immunoSEQ hsTCRB Kit](https://www.immunoseq.co
 
 # Folder Structure
 
+```
 20.440-TCR-Analysis/
 |__ README.md					<- this file
 |__ driver.sh 					<- runs all
@@ -30,7 +31,7 @@ The data was generated using the [immunoSEQ hsTCRB Kit](https://www.immunoseq.co
 	|__ main_fig/				<- contains figures for main
 	|__ tables/					<- contains all tables
 	|__ supp_fig/				<- contains figures for supplement
-
+```
 
 # Installation
 
