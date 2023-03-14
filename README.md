@@ -12,26 +12,27 @@ The data was generated using the [immunoSEQ hsTCRB Kit](https://www.immunoseq.co
 
 ```
 20.440-TCR-Analysis/
-|__ README.md					<- this file
-|__ driver.sh 					<- runs all
-|__ src/ 						<- contains all scripts for generating results
-	|__ data/ 					<- scripts for cleaning data
-	|__ analysis/ 				<- scripts for producing results
-	|__ visualization/ 			<- scripts for plotting results
-	|__ util/ 					<- commonly reused scripts
-|__ data/						<- contains all data used for project
-	|__ raw/					<- contains raw data
-		|__ ChemoProjTCRs/		<- contains all ImmunoSEQ formatted repertoires
-	|__ processed/				<- contains any processed datasets
-	|__ analysis/				<- contains data ready for visualization
-		|__ SampleOverview.tsv	<- overview file with population summary statistics
-|__ notebook/					<- exploratory notebooks
-	|__ TCR.ExploratoryDG.r		<- Dennis's exploratory notebook
-|__ fig/ 						<- contains figures
-	|__ main_fig/				<- contains figures for main
-	|__ tables/					<- contains all tables
-	|__ supp_fig/				<- contains figures for supplement
+|__ README.md				
+|__ driver.sh 					
+|__ src/ 						
+	|__ data/ 					
+	|__ analysis/ 				
+	|__ visualization/ 			
+	|__ util/ 					
+|__ data/						
+	|__ raw/					
+		|__ ChemoProjTCRs/	
+	|__ processed/				
+	|__ analysis/				
+		|__ SampleOverview.tsv	
+|__ notebook/					
+	|__ TCR.ExploratoryDG.r		
+|__ fig/ 						
+	|__ main_fig/				
+	|__ tables/					
+	|__ supp_fig/				
 ```
+'Src' contains all scripts for generating results, which include scripts for cleaning data (data/), scripts for producing results (analysis/), scripts for visualizing results (visualization/), and commonly reused scripts (util/). In the data/ folder in the parent directory, raw data are stored in raw/ which contains all ImmunoSEQ formatted repertoires. Processed datasets and any intermediates are stored in processed/, data that are directly used for plotting are stored in analysis/. Exploratory notebooks are stored in the notebook/ directory in the parent directory. In the fig/ directory, there are three subdirectories used to store main figures, tables, and supplemental figures.
 
 # Installation
 
