@@ -8,6 +8,16 @@ This repo was created by Dennis Gong and Thomas Usherwood as part of the Biologi
 
 The data was generated using the [immunoSEQ hsTCRB Kit](https://www.immunoseq.com/) with samples obtained by Høye et al., with an abstract published in Cancer Research, accessible [here](https://aacrjournals.org/cancerres/article/82/12_Supplement/1346/699749/Abstract-1346-T-cell-receptor-repertoire). The dataset contains 92 samples, with 35 patients receiving neoadjuvant chemotherapy (NACT) for short interval and 15 patients receiving long interval NACT. An additional 35 patients did not receive NACT. All repertoires are stored in Adaptive ImmunoSEQ format. 
 
+NOTE: The data files are large, so they are not included in the repository. When first cloning the repository, generate the required data folder structure using:
+$ mkdir data
+$ cd data/
+$ mkdir analysis
+$ mkdir processed
+$ mkdir raw
+$ cd ../../
+
+From the data listed above, populate ./data/raw/ with the sequencing files for each patient, and populate ./data/analysis with the sample overview file downloaded from ImmunoSeq.
+
 # Folder Structure
 
 ```
