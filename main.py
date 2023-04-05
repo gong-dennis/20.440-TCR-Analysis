@@ -5,7 +5,7 @@ from src.data.parse_overview import parse_sample_overview
 from src.analysis.calc_diversity import quantify_patients
 from src.util.helpers import get_mean, shannon_idx, shannon_idx_vdj, \
        get_richness, get_richness_vdj
-from src.visualization.plotting import violin, strip_plot
+from src.visualization.plotting import strip_plot
 
 def main():
     load_precalculated = True
