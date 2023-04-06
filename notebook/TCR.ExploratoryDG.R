@@ -52,5 +52,7 @@ ggplot2::ggplot(vGenes, aes(x = repertoire_id, y = gene_frequency, fill = gene_n
   ggplot2::labs(y = "Frequency (%)", x = "", fill = "") +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust = 1))
 
-bhattacharyya_matrix <- LymphoSeq2::scoringMatrix(aa_table, mode = "Bhattacharyya")
-LymphoSeq2::pairwisePlot(bhattacharyya_matrix)
+# Search databases
+
+db_search <- LymphoSeq2::searchDB(study_table = aa_table, dbname = "all", chain = "trb")
+colnames(db_search)
