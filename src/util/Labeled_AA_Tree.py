@@ -66,12 +66,18 @@ class Labeled_AA_Tree(Tree_Abstract):
 
     def _traverse_tree(self):
         all_seqs = []
-        seq_labels = []
+        seq_labels = {}
         for aa_seq, val in self.tree_dict.items():
             is_terminal = val[1]
             if is_terminal:
                 for lbl in self.labels[aa_seq]:
-                    all_seqs.append(aa_seq)
-                    seq_labels.append(lbl) # THIS IS TERRIBLE
+                    keys = lbl.index.to_list()
+                    if not seq_labels:
+                        seq_labels = {i: [] for i in keys}
 
-        return pd.DataFrame({'aa_seqs': all_seqs, 'labels': seq_labels})
+                    all_seqs.append(aa_seq)
+                    for k in keys:
+                        seq_labels[k].append(lbl[k])
+
+        seq_dict = {'aa_seqs': all_seqs}
+        return pd.DataFrame({**seq_dict, **seq_labels}).drop_duplicates()

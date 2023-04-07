@@ -2,8 +2,27 @@ import abc
 import pickle as pkl
 
 class Tree_Abstract:
+    """
+    Abstract class for search trees. Includes methods shared between
+    labeled and unlabeled trees, as well as abstract methods for 
+    methods that are implemented differently between the child classes.
+    """
     def __init__(self, df, root=[], tree_dict={}):
+        """
+        Constructor for abstract class
+
+        Args:
+            df (pd.DataFrame): dataframe containing amino acid data 
+                with/without labels
+            root (list, optional): list of tree nodes that correspond with the 
+                root of the tree (i.e. the first amino acids in the sequence). 
+                Defaults to [].
+            tree_dict (dict, optional): dictionary storing the tree structure. Datatypes are  Defaults to {}.
+        """
         self.df = df
+        
+        # Can intialize tree without providing data, or with data
+        # provided in a dataframe
         if self.df is None:
             self.root = root
             self.tree_dict = tree_dict
@@ -11,11 +30,15 @@ class Tree_Abstract:
             self.root = []
             self.tree_dict = {}
 
+        # If tree is initialized with data, populate tree from data
         if self.df is not None:
             self._populate_tree()
 
 
     def _populate_tree(self):
+        """
+
+        """
         for _, row in self.df.iterrows():
             self._add_aa_seq(row)
 

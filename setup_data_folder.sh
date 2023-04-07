@@ -5,4 +5,5 @@ cd raw
 mkdir ChemoProjTCRs
 cd ..
 cd processed
-mkdir tree_pkl
+mkdir shared_seqs_vdjdb
+mkdir shared_seqs_deepcat
