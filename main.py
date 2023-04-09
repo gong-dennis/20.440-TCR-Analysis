@@ -12,9 +12,14 @@ from src.data.compare_with_db import seq_matches_deepcat_cdr3, seq_matches_vdjdb
 from src.visualization.plots_from_overview import create_stripplots
 
 def main():
+<<<<<<< Updated upstream
     if rp.compare_with_vdjdb: seq_matches_vdjdb()
     if rp.compare_with_deepcat: seq_matches_deepcat_cdr3()
 
+=======
+    load_precalculated = False
+    
+>>>>>>> Stashed changes
     saved_df_path = os.path.join('data', 'processed', 'precalculated.tsv')
     if not rp.load_overview:
        # Parse overview tsv file
