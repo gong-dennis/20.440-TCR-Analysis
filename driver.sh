@@ -10,3 +10,4 @@
 # 	 Stored in fig/supp_fig/
 
 Rscript src/visualization/Fig1_Clonality.R # Saves file as S1.1_prodSimpClon.pdf
+python3 main.py
