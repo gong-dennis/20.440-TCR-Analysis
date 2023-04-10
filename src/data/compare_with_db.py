@@ -3,6 +3,7 @@ import os
 from tqdm import tqdm
 from src.util.Labeled_AA_Tree import Labeled_AA_Tree
 from src.util.Unlabeled_AA_Tree import Unlabeled_AA_Tree
+from src.util.helpers import get_aa_seqs
 
 def seq_matches_vdjdb():
     db_path = 'data/raw/vdjdb.txt'
@@ -35,13 +36,8 @@ def _generate_matches_db(db_tree, save_prefix):
 
 
 def _one_patient_matches(labeled_tree, livmet_path):
-    aa_codes = 'ARNDCEQGHILKMFPSTWYVX'
-
-    livmet_df = pd.read_csv(livmet_path, sep='\t', low_memory=False)
-    livmet_df = livmet_df.loc[livmet_df['aminoAcid'].notna()]
-    livmet_df = livmet_df.loc[livmet_df['aminoAcid'].apply(
-        lambda x: all(i in aa_codes for i in x))]
-    livmet_df = livmet_df['aminoAcid'].to_frame()
+    livmet_df = get_aa_seqs(livmet_path)
+    livmet_df = livmet_df.to_frame()
     unlabeled_tree = Unlabeled_AA_Tree(livmet_df)
 
     lab_comp = labeled_tree.compare_with_unlabeled(unlabeled_tree)

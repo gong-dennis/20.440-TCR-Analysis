@@ -87,4 +87,4 @@ class Unlabeled_AA_Tree(Tree_Abstract):
             if val[1]:
                 all_seqs.append(aa_seq)
         
-        return pd.DataFrame({'aa_seqs': all_seqs})
+        return pd.DataFrame({'aa_seqs': all_seqs}).drop_duplicates()
