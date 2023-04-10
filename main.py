@@ -31,8 +31,7 @@ def main():
    if rp.save_tcr_mults: save_tcr_multiplicities()
 
    saved_df_path = os.path.join('data', 'processed', 'precalculated.tsv')
-   if rp.calculate_overview:
-      diversity_metrics_to_ov(saved_df_path)
+   if rp.calculate_overview: diversity_metrics_to_ov(saved_df_path)
    ov_df = pd.read_csv(saved_df_path, sep="\t")
 
    if rp.plot_from_overview: create_stripplots(ov_df)

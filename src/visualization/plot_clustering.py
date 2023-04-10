@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import seaborn as sns
 import pickle as pkl
+from src.visualization.plotting import strip_plot, ov_strip_plot_stats
 
 def survival_vs_deepcat(ov_df):
     ov_slice = ov_df[['sample_name', 'survival_months', 'group_label']]
@@ -10,12 +11,22 @@ def survival_vs_deepcat(ov_df):
 
     db_matches = _get_mults(prefix)
     ov_slice['db_matches'] = db_matches
-    sns.scatterplot(ov_slice, x='db_matches', y='survival_months', 
-                    hue='group_label')
-    plt.xlabel('Number of Cancer-Associated TCRs')
+    
+    ax = sns.scatterplot(data=ov_slice, x='db_matches', y='survival_months', 
+                         hue='group_label')
+    sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
+    plt.xscale('log')
+    plt.xlabel('Log of Number of Cancer-Associated TCRs')
     plt.ylabel('Months of Survival')
-    plt.savefig(os.path.join('fig', 'main_fig', 'cluster_plots', 
-                             'survival_vs_matches.jpg'), bbox_inches='tight')
+    plot_prefix = 'fig/main_fig/cluster_plots/'
+    plt.savefig(plot_prefix + 'survival_vs_matches.jpg', 
+                bbox_inches='tight')
+
+    ov_strip_plot_stats(ov_slice, 'group_label', 'survival_months', 
+               'Months of Survival', plot_prefix + 'survivals_nocluster.jpg')
+    ov_strip_plot_stats(ov_slice, 'group_label', 'db_matches', 
+               'Number of Cancer-Associated TCRs', 
+               plot_prefix + 'matches_nocluster.jpg')
     
 
 def survival_vs_deepcat_clustering(ov_df):
@@ -24,13 +35,22 @@ def survival_vs_deepcat_clustering(ov_df):
 
     db_matches = _get_mults_with_clustering(prefix)
     ov_slice['db_matches'] = db_matches
-    sns.scatterplot(ov_slice, x='db_matches', y='survival_months', 
-                    hue='group_label')
-    plt.xlabel('Number of Cancer-Associated TCRs')
+    ax = sns.scatterplot(data=ov_slice, x='db_matches', y='survival_months', 
+                         hue='group_label')
+    sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
+    plt.xscale('log')
+    plt.xlabel('Log of Number of Cancer-Associated TCRs')
     plt.ylabel('Months of Survival')
+    plot_prefix = 'fig/main_fig/cluster_plots/'
     plt.savefig(os.path.join('fig', 'main_fig', 'cluster_plots', 
                              'survival_vs_matches_clustering.jpg'), 
                              bbox_inches='tight')
+    
+    ov_strip_plot_stats(ov_slice, 'group_label', 'survival_months', 
+               'Months of Survival', plot_prefix + 'survivals_cluster.jpg')
+    ov_strip_plot_stats(ov_slice, 'group_label', 'db_matches', 
+               'Number of Cancer-Associated TCRs', 
+               plot_prefix + 'matches_cluster.jpg')
 
 
 def _get_mults_with_clustering(cancer_prefix):
