@@ -238,7 +238,7 @@ pyrightconfig.json
 .ionide
 
 ### Project-specific configurations ###
-data/*
+data/raw/*
 GIANA/
 DeepCAT/
 
