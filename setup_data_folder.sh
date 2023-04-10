@@ -7,3 +7,6 @@ cd ..
 cd processed
 mkdir shared_seqs_vdjdb
 mkdir shared_seqs_deepcat
+mkdir clustcr_labels
+mkdir cancer_clusters
+mkdir multiplicity_dicts

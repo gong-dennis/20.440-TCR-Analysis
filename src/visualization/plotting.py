@@ -18,6 +18,7 @@ def strip_plot(ov_df, xslice, yslice, ylabel, filename, show=False):
     plt.xlabel('')
     plt.ylabel(ylabel)
 
-    plt.savefig(os.path.join('fig', 'main_fig', filename), bbox_inches='tight')
+    plt.savefig(os.path.join('fig', 'main_fig', 'overview_strip_plots', 
+                             filename), bbox_inches='tight')
     
     if show: plt.show()
