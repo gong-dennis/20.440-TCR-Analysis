@@ -33,6 +33,13 @@ nuc_table <- LymphoSeq2::productiveSeq(study_table = study_table, aggregate = "j
                                        prevalence = FALSE)
 save(nuc_table, file = "../data/processed/nuc_table.RData")
 
+
+samples <- aa_table %>% 
+  dplyr::pull(repertoire_id) %>% unique()
+LymphoSeq2::lorenzCurve(repertoire_ids = samples, study_table = aa_table)
+
+LymphoSeq2::plotRarefactionCurve(study_table = aa_table)
+
 ##### Table 1 and Kaplan Meier #####
 
 # Create a list of categorical variables
