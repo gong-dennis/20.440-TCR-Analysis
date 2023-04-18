@@ -127,3 +127,75 @@ top_freq_matrix %>% arrange(-numberSamples)
 
 write.csv(top_freq_matrix %>% filter(numberSamples > 2), "../data/analysis/recurrentTCRs.csv")
 
+
+##### Characterize cluster distributions in each group #####
+
+getCancerClusters <- function(name) {
+  clusters <- read.csv(paste0("data/processed/cancer_clusters/", name, ".csv")) 
+  if ("cluster" %in% names(clusters)) {
+    return(clusters %>% pull(cluster))
+  } else {
+    return(vector())
+  }
+}
+
+getNumTCRsFromCluster <- function(name, clusters) {
+  TCRs <- read.csv(paste0("data/processed/clustcr_labels/", name, ".csv"))
+  mergedAA <- as_tibble(aa_table) %>% filter(repertoire_id == name) %>% 
+    filter(cluster %in% clusters) %>% merge(TCRs)
+  table <- mergedAA %>% group_by(cluster) %>% summarize(n = sum(duplicate_count)) %>%
+    arrange(-n)
+  return(table)
+}
+
+NoNACT.IDs <- study_table %>% filter(group_label == "No NACT") %>% 
+  pull(repertoire_id) %>% unique()
+ShortNACT.IDs <- study_table %>% filter(group_label == "Short Interval") %>% 
+  pull(repertoire_id) %>% unique()
+LongNACT.IDs <- study_table %>% filter(group_label == "Long Interval") %>% 
+  pull(repertoire_id) %>% unique()
+
+getCDF <- function(name) {
+  TCRs <- read.csv(paste0("data/processed/clustcr_labels/", name, ".csv"))
+  mergedAA <- as_tibble(aa_table) %>% filter(repertoire_id == name) %>% merge(TCRs)
+  table <- mergedAA %>% group_by(cluster) %>% summarize(n = sum(duplicate_count)) %>%
+    arrange(-n)
+  return(ecdf(table$n))
+}
+
+getTCRsPerCluster <- function(name) {
+  TCRs <- read.csv(paste0("data/processed/clustcr_labels/", name, ".csv"))
+  mergedAA <- as_tibble(aa_table) %>% filter(repertoire_id == name) %>% merge(TCRs)
+  table <- mergedAA %>% group_by(cluster) %>% summarize(n = sum(duplicate_count)) %>%
+    arrange(-n)
+  return(table$n)
+}
+
+# Generate CDFs for each group
+
+CDFs <- lapply(sample_names, getCDF)
+names(CDFs) <- sample_names
+
+x_values <- seq(0, 1000, length.out=100)
+avgCDF_No <- sapply(x_values, function(x) mean(sapply(CDFs[NoNACT.IDs], function(f) f(x))))
+avgCDF_Short <- sapply(x_values, function(x) mean(sapply(CDFs[ShortNACT.IDs], function(f) f(x))))
+avgCDF_Long <- sapply(x_values, function(x) mean(sapply(CDFs[LongNACT.IDs], function(f) f(x))))
+
+df_avg_cdf <- data.frame(x = x_values, `No NACT` = avgCDF_No, 
+                         `Short Interval` = avgCDF_Short, `Long Interval` = avgCDF_Long)
+df_long <- gather(df_avg_cdf, key="variable", value="value", -x)
+df_long$variable <- factor(df_long$variable, levels=c("No.NACT", "Short.Interval", "Long.Interval"))
+
+
+ggplot(df_long, aes(x=x, y=value, color=variable)) + 
+  geom_line() +
+  labs(x="TCR Clusters", y="CDF", color="Variable") +
+  theme_minimal() +
+  theme(panel.grid=element_blank(), legend.position="top", 
+        legend.text=element_text(size=7), legend.margin=margin(t=4)) +
+  guides(color=guide_legend(title=NULL)) +# Remove legend title
+  scale_color_discrete(labels=c("No NACT", "Short Interval", "Long Interval"))
+
+
+lapply(ShortNACT.IDs, getCancerClusters)
+
