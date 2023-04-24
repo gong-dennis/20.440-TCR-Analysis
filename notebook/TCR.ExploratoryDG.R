@@ -142,7 +142,7 @@ getCancerClusters <- function(name) {
 getNumTCRsFromCluster <- function(name, clusters) {
   TCRs <- read.csv(paste0("data/processed/clustcr_labels/", name, ".csv"))
   mergedAA <- as_tibble(aa_table) %>% filter(repertoire_id == name) %>% 
-    filter(cluster %in% clusters) %>% merge(TCRs)
+    merge(TCRs, by = "junction_aa") %>% filter(cluster %in% clusters)
   table <- mergedAA %>% group_by(cluster) %>% summarize(n = sum(duplicate_count)) %>%
     arrange(-n)
   return(table)
@@ -173,8 +173,8 @@ getTCRsPerCluster <- function(name) {
 
 # Generate CDFs for each group
 
-CDFs <- lapply(sample_names, getCDF)
-names(CDFs) <- sample_names
+CDFs <- lapply(metadata$sample_name, getCDF)
+names(CDFs) <- metadata$sample_name
 
 x_values <- seq(0, 1000, length.out=100)
 avgCDF_No <- sapply(x_values, function(x) mean(sapply(CDFs[NoNACT.IDs], function(f) f(x))))
@@ -189,13 +189,18 @@ df_long$variable <- factor(df_long$variable, levels=c("No.NACT", "Short.Interval
 
 ggplot(df_long, aes(x=x, y=value, color=variable)) + 
   geom_line() +
-  labs(x="TCR Clusters", y="CDF", color="Variable") +
+  labs(x="Sum of TCR Clusters", y="Cumulative Distribution Function", color="Variable") +
   theme_minimal() +
   theme(panel.grid=element_blank(), legend.position="top", 
         legend.text=element_text(size=7), legend.margin=margin(t=4)) +
   guides(color=guide_legend(title=NULL)) +# Remove legend title
-  scale_color_discrete(labels=c("No NACT", "Short Interval", "Long Interval"))
-
+  scale_color_manual(labels=c("No NACT", "Short Interval", "Long Interval"), values = c("#E69F00", "#56B4E9", "#009E73"))
+  
+ks.test(avgCDF_Short, avgCDF_Long, alternative = "greater")
+ks.test(avgCDF_Long, avgCDF_No, alternative = "greater")
 
 lapply(ShortNACT.IDs, getCancerClusters)
+
+plot(avgCDF_Long, col = "blue", main = "Empirical CDFs")
+lines(avgCDF_No, col = "red")
 
