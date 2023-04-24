@@ -17,5 +17,5 @@ find_cancer_clusters = False
 ### Plotting
 ## Create stripplots from overview file
 plot_from_overview = False
-plot_survival_num_tcr = True
+plot_survival_num_tcr = False
 plot_survival_num_tcr_clustering = True

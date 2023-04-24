@@ -25,7 +25,11 @@ def strip_plot(ov_df, xslice, yslice, ylabel, filepath, show=False):
     if show: plt.show()
 
 
-def ov_strip_plot_stats(ov_df, xslice, yslice, ylabel, filepath, show=False):
+def ov_strip_plot_stats(ov_df, xslice, yslice, ylabel, filepath, show=False, 
+                        y_log=False):
+    plt.clf()
+    plt.figure(figsize=(4,6))
+    
     plotting_parameters = {
         'data': ov_df,
         'x': xslice,
@@ -38,8 +42,8 @@ def ov_strip_plot_stats(ov_df, xslice, yslice, ylabel, filepath, show=False):
 
     with sns.plotting_context('notebook'):
         # Plot with seaborn
-        plt.figure()
         ax = sns.stripplot(**plotting_parameters)
+        if y_log: ax.set(yscale="log")
 
         no_nact = ov_df.loc[ov_df['group_label']=='No NACT', yslice]
         short_int = ov_df.loc[ov_df['group_label']=='Short Interval', yslice]
@@ -52,6 +56,13 @@ def ov_strip_plot_stats(ov_df, xslice, yslice, ylabel, filepath, show=False):
 
         # Transform each p-value to "p=" in scientific notation
         formatted_pvalues = _annotate_p_vals(pvalues, alpha=0.05)
+
+        indices = [i for i, x in enumerate(formatted_pvalues) if x == 'ns']
+
+        if not len(indices) == 3:
+            for index in sorted(indices, reverse=True):
+                del pairs[index]
+                del formatted_pvalues[index]
 
         # Add annotations
         annotator = Annotator(ax, pairs, **plotting_parameters)

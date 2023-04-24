@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def parse_sample_overview(samp_overview_path):
+def parse_sample_overview(samp_overview_path, saved_df_path):
     ov_df = pd.read_csv(samp_overview_path, sep='\t')
     ov_df = ov_df.sort_values(by=['sample_name'])
 
@@ -26,7 +26,7 @@ def parse_sample_overview(samp_overview_path):
     ov_df['group_label'] = \
         ov_df['interval_group_num'].apply(lambda x: group_label_list[x])
 
-    return ov_df
+    ov_df.to_csv(saved_df_path, sep="\t", index=False)
     
 
 def _containing_substr(str_list, substr):

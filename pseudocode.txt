@@ -1,0 +1,34 @@
+Processed data files to generate:
+- overview with cols for richness and gini
+- CSV(s) with number of cancer associated clusters
+- cluster annotations for each patient of unique AA seqs
+- indications of which ones of those clusters are cancer associated
+- cluster labels for entire repertoire of combined tcrs
+
+- csvs with conserved tcrs across treatment groups (i.e. clusters which share similarities between groups)
+- csvs with conserved tcrs within each treatment group (i.e. clusters which 
+share similarities between patients, broken down as a histogram of which are most represented in patient population)
+
+
+
+
+1. Preprocess raw data TSVs to get multiplicities
+- Initialize dict (to write to df)
+- Initialize set (to keep track of unique AA seqs)
+- Iterate through all TSVs
+    - Iterate through each row in TSV
+    - If AA not in set:
+        - Add AA to output TSV with rest of 
+    - elif aa in set:
+        - add multiplicity to appropriate row in TSV
+
+
+
+2. Preprocess overview (write metrics to preprocess TSV)
+3. Compare 
+
+
+
+
+Guide:
+- processed sequencing data (to boil down to multiplicites): data/processed/tcrs_condensed
