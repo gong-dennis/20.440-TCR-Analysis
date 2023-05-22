@@ -6,6 +6,7 @@ library(tableone)
 library(ggstance)
 library(tidytext)
 library(forcats)
+library(ggsignif)
 
 # Calculate prevalence of cancer associated TCRs and plot
 
@@ -23,6 +24,8 @@ caTCRPrevalenceTable <- function(name) {
 }
 
 metadata <- read.csv("data/processed/precalculated.tsv", sep = "\t")
+metadata$group_label <- factor(metadata$group_label, levels = c("No NACT", "Short Interval", "Long Interval"))
+
 sample_names <- metadata$sample_name
 
 hi <- lapply(sample_names, caTCRPrevalenceTable) %>% do.call(what = rbind)
@@ -34,10 +37,13 @@ my_colors <- c("#9AC9E3", "#EFC3E6")
 ggplot(hi, aes(x = sample_name, y = prop,
                fill = fct_reorder(factor(cancer), prop),
                color = cancer)) +
-  geom_col(position = "fill", colour="black", size = 0.2) +
+  geom_col(position = "fill", colour="black", size = 0.2, alpha = 0.8) +
   facet_grid(~ group_label, scales = "free_x", space = "free_x") +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
   labs(x = "", y = "Proportion of 20 Top Clusters", fill = "") +
   theme_classic() + ylim(0,1) +
-  theme(legend.position = "top") +
+  theme(legend.position = "top",
+        axis.title = element_text(face = "bold"),
+        legend.text = element_text(face = "bold"),
+        strip.text.x = element_text(face = "bold")) +
   scale_fill_manual(values = my_colors)

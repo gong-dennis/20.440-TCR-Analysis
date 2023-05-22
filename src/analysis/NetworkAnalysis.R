@@ -25,8 +25,13 @@ LongSurvivor.IDs <- metadata %>% filter(survivor == "Long Term") %>%
 test <- merge(allSampleCluster, aa_table, by = "junction_aa")
 
 stringentCancerTCRs <- test %>% group_by(cluster) %>% summarize(stringentCancer = sum(stringentCancer == "Yes"),
-                                                                stringentNormal = sum(stringentNormal == "Yes")) %>%
-  filter(stringentCancer > stringentNormal) %>% arrange(-stringentCancer)
+                                                                stringentNormal = sum(stringentNormal == "Yes"),
+                                                                count = sum(duplicate_count), 
+                                                                repertoires = n_distinct(repertoire_id),
+                                                                unique_aa = n_distinct(junction_aa)) %>%
+  filter(stringentCancer > stringentNormal) %>% arrange(-stringentCancer) %>%
+  filter(stringentNormal == 0) %>% filter(repertoires > 1)
+
 allSpecificClusters <- test %>% filter(cluster %in% stringentCancerTCRs$cluster) %>% pull(junction_aa)
 specificClusters <- stringentCancerTCRs$cluster
 
@@ -71,12 +76,12 @@ net <- as.network(x = my_matrix, # the network object
 
 # Network properties
 network.vertex.names(net) <- rownames(my_matrix)
-groupNames <- metadata$group_label
+groupNames <- rownames(my_matrix)
 groupNames[rownames(my_matrix) %in% NoNACT.IDs] <- "No NACT"
 groupNames[rownames(my_matrix) %in% ShortNACT.IDs] <- "Short Interval"
 groupNames[rownames(my_matrix) %in% LongNACT.IDs] <- "Long Interval"
 
-survivalNames <- metadata$survival_months
+survivalNames <- rownames(my_matrix)
 survivalNames[rownames(my_matrix) %in% ShortSurvivor.IDs] <- "Short Term"
 survivalNames[rownames(my_matrix) %in% LongSurvivor.IDs] <- "Long Term"
 
@@ -94,24 +99,32 @@ networkMap$color[groupNames == "Long Interval"] <- "#009E73"
 net %v% "color" = networkMap$color
 
 # Plot network
-ggnet2(net, color = "colorS", size = "degree", alpha = 0.4, 
+ggnet2(net, color = "color", size = "degree", alpha = 0.4, 
        edge.color = "grey", edge.size = "weight", mode = 'kamadakawai') +
   guides(size = FALSE)
 
 networkCoords <- ggnet2(net, color = "color", size = "degree", alpha = 0.4, 
        edge.color = "grey", edge.size = "weight", mode = 'kamadakawai')$data
 
-degree(net)[survivalNames == "Short Term"] %>% mean() /2
-rowSums(cluster_mat)[survivalNames == "Short Term"] %>% mean
+degree(net)[groupNames == "Short Interval"] %>% mean(na.rm = TRUE) /2
+rowSums(cluster_mat)[groupNames == "Short Interval"] %>% mean(na.rm = TRUE)
+
+degree(net)[groupNames == "Long Interval"] %>% mean(na.rm = TRUE) /2
+rowSums(cluster_mat)[groupNames == "Long Interval"] %>% mean(na.rm = TRUE)
+
+degree(net)[groupNames == "No NACT"] %>% mean(na.rm = TRUE) /2
+rowSums(cluster_mat)[groupNames == "No NACT"] %>% mean(na.rm = TRUE)
 
 # Plot network
-ggnet2(net, color = "color", size = "degree", alpha = 0.4, 
+ggnet2(net, color = "colorS", size = "degree", alpha = 0.4, 
        edge.color = "grey", edge.size = "weight", mode = 'kamadakawai') +
   guides(size = FALSE)
 
-networkCoords <- ggnet2(net, color = "color", size = "degree", alpha = 0.4, 
+networkCoords <- ggnet2(net, color = "colorS", size = "degree", alpha = 0.4, 
                         edge.color = "grey", edge.size = "weight", mode = 'kamadakawai')$data
 
-degree(net)[survivalNames == "Short Term"] %>% mean() /2
-rowSums(cluster_mat)[survivalNames == "Short Term"] %>% mean
+degree(net)[survivalNames == "Long Term"] %>% mean(na.rm = TRUE) /2
+rowSums(cluster_mat)[survivalNames == "Long Term"] %>% mean(na.rm = TRUE)
 
+degree(net)[survivalNames == "Short Term"] %>% mean(na.rm = TRUE) /2
+rowSums(cluster_mat)[survivalNames == "Short Term"] %>% mean(na.rm = TRUE)

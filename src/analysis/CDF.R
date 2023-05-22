@@ -1,11 +1,8 @@
 library(tidyverse)
-library(LymphoSeq2)
 library(ggplot2)
 library(gridExtra)
-library(tableone)
 library(ggstance)
 library(tidytext)
-library(survminer)
 
 # Read in metadata
 metadata <- read.csv("data/processed/precalculated.tsv", sep = "\t")
@@ -74,10 +71,11 @@ df_long$variable <- factor(df_long$variable, levels=c("No.NACT", "Short.Interval
 # Plot
 ggplot(df_long, aes(x=x, y=value, color=variable)) + 
   geom_line() +
-  labs(x="Sum of TCR Clusters", y="Cumulative Distribution Function", color="Variable") +
+  labs(x="Cumulative TCR Clusters", y="Cumulative Probability", color="Variable") +
   theme_minimal() +
   theme(panel.grid=element_blank(), legend.position="top", 
-        legend.text=element_text(size=7), legend.margin=margin(t=4)) +
+        legend.text=element_text(size=7, face = "bold"), legend.margin=margin(t=4),
+        axis.title = element_text(face = "bold")) +
   guides(color=guide_legend(title=NULL)) +# Remove legend title
   scale_color_manual(labels=c("No NACT", "Short Interval", "Long Interval"), values = c("#E69F00", "#56B4E9", "#009E73"))
 

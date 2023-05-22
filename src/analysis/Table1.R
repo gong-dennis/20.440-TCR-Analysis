@@ -37,14 +37,17 @@ km_fit <- survival::survfit(surv_object ~ group_label, data = patients_data)
 # Define custom theme for the main plot
 custom_main_plot_theme <- theme_minimal() +
   theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank(),
+        axis.title = element_text(face = "bold"),
+        legend.text = element_text(face = "bold"),
+        legend.title = element_text(face = "bold"))
 
 # Plot the Kaplan-Meier curve using ggplot2
 ggsurvplot(km_fit,
            data = patients_data,
            palette = c("#E69F00", "#56B4E9", "#009E73"),
            risk.table = FALSE,
-           pval = FALSE,
+           pval = TRUE,
            conf.int = FALSE,
            legend.labs = c("Long NACT", "No NACT", "Short NACT"),
            xlab = "Months After Surgery",

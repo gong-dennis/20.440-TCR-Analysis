@@ -6,6 +6,7 @@ library(tableone)
 library(ggstance)
 library(tidytext)
 library(forcats)
+library(ggsignif)
 
 # Load in data
 load(file = "data/processed/aa_table.RData")
@@ -15,8 +16,11 @@ allSampleCluster <- read.csv("data/processed/AllSampleCluster.csv")
 test <- merge(allSampleCluster, aa_table, by = "junction_aa")
 
 stringentCancerTCRs <- test %>% group_by(cluster) %>% summarize(stringentCancer = sum(stringentCancer == "Yes"),
-                                                                stringentNormal = sum(stringentNormal == "Yes")) %>%
-  filter(stringentCancer > stringentNormal) %>% arrange(-stringentCancer)
+                                                                stringentNormal = sum(stringentNormal == "Yes"),
+                                                                count = sum(duplicate_count), 
+                                                                repertoires = n_distinct(repertoire_id)) %>%
+  filter(stringentCancer > stringentNormal) %>% arrange(-stringentCancer) %>%
+  filter(stringentNormal == 0) %>% filter(repertoires > 1)
 
 test_plot <- test %>% group_by(cluster, cancer) %>% summarize(Distinct_IDs = n_distinct(repertoire_id), n = n()) %>% arrange(-Distinct_IDs)
 
@@ -40,4 +44,18 @@ ggplot(test_plot, aes(x = stringent, y = Distinct_IDs, color = stringent)) +
               #c("No NACT", "Long Interval")),
               map_signif_level = TRUE, color = "black") +
   scale_y_log10()
+
+ggplot(test_plot, aes(x = Distinct_IDs, fill = stringent)) +
+  geom_histogram(binwidth = 1, alpha = 0.5, position = "identity") +
+  scale_fill_manual(values = c("#9AC9E3", "#EFC3E6"), name = "", 
+                    labels = c("Broadly Expressed", "Cancer Specific")) +
+  labs(x = "Patient Repertoires Per Cluster", y = "Frequency") +
+  theme_classic() +
+  scale_y_continuous(trans=scales::pseudo_log_trans(base = 10),
+                     breaks = c(1, 10, 100, 1000),
+                     labels = c(1, 10, 100, 1000)) +
+
+  theme(legend.position = "top",
+        axis.title = element_text(face = "bold"),
+        legend.text = element_text(face = "bold"))
 

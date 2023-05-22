@@ -24,3 +24,19 @@ ggplot(metadata, aes(x = group_label, y = aa_richness, color = group_label)) +
         axis.text = element_text(face="bold")) +
   geom_signif(comparisons = list(c("Short Interval", "No NACT")),
               map_signif_level = TRUE, color = "black")
+
+
+### Testing
+
+# Create jitterplot with mean overlay and statistical significance
+ggplot(metadata, aes(x = group_label, y = total_rearrangements, color = group_label)) +
+  geom_boxplot(width = 0.2) +
+  geom_jitter(width = 0.2, height = 0, alpha = 0.8) +
+  scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73")) +
+  labs(x = "", y = "Unique Sequences") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.title = element_text(face = "bold"),
+        axis.text = element_text(face="bold")) +
+  geom_signif(comparisons = list(c("Short Interval", "No NACT")),
+              map_signif_level = TRUE, color = "black")
